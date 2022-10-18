@@ -62,8 +62,6 @@ export default function SeriesForm() {
                 alignItems: 'center',
                 marginTop: '100px',
                 justifyContent: 'space-around',
-                borderColor: 'black',
-                borderInlineColor: 'black',
             }}
             noValidate
             autoComplete="off"

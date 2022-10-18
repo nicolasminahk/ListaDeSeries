@@ -1,7 +1,9 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import DataBase from './DataBase'
+import ModalToConfirm from './ModalToConfirm'
 import SeriesForm from './SeriesForm'
+import Connect from './Connect'
 
 function App() {
     return (
@@ -9,7 +11,9 @@ function App() {
             {/* <App /> */}
             <Routes>
                 <Route path="/serie" element={<SeriesForm />} />
-                <Route path="/" element={<DataBase />} />
+                <Route path="/base" element={<DataBase />} />
+                <Route path="/modal" element={<ModalToConfirm />} />
+                <Route path="/" element={<Connect />} />
             </Routes>
         </>
     )

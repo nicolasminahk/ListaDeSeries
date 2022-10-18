@@ -21,6 +21,11 @@ function createData(
     return { titulo, descripcion, fecha, estrellas, precio, genero, atp, estado }
 }
 
+//Pedido new serie
+//Edit serie
+//cambiar el estado
+//eliminar
+
 const rows = [
     createData('Breaking Bad', 'una serie de narcotrafico', 8.2013, 5, 'suspeso', 666, true, true),
     createData('Tween Peaks', 'una serie de  delito', 11.2003, 3, 'suspeso', 999, true, true),
