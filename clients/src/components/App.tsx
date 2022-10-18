@@ -1,10 +1,15 @@
 import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import SeriesForm from './SeriesForm'
 
 function App() {
     return (
-        <div className="App">
-            <header className="App-header"></header>
-        </div>
+        <>
+            {/* <App /> */}
+            <Routes>
+                <Route path="/" element={<SeriesForm />} />
+            </Routes>
+        </>
     )
 }
 
