@@ -1,16 +1,17 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import { Divider, MenuItem } from '@mui/material'
-import Grid from '@material-ui/core/Grid'
-import DateFnsUtils from '@date-io/date-fns'
-
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import { Divider, FormControl, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup } from '@mui/material'
 
 export default function SeriesForm() {
-    const [value, setValue] = React.useState('Controlled')
+    const [value, setValue] = React.useState('')
     const [currency, setCurrency] = React.useState('')
+    const [titulo, setTitulo] = React.useState('')
+    const [descripcion, setDescripcion] = React.useState('')
+    const [estrellas, setEstrellas] = React.useState('')
+    const [precio, setPrecio] = React.useState(Number)
 
+    console.log(precio)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value)
     }
@@ -18,6 +19,18 @@ export default function SeriesForm() {
 
     const handleDateChange = (date: any) => {
         setSelectedDate(date)
+    }
+    const handleTitulo = (e: any) => {
+        setTitulo(e.target.value)
+    }
+    const handleDescripcion = (e: any) => {
+        setDescripcion(e.target.value)
+    }
+    const handleEstrellas = (e: any) => {
+        setEstrellas(e.target.value)
+    }
+    const handlePrecio = (e: any) => {
+        setPrecio(e.target.value)
     }
     const currencies = [
         {
@@ -49,6 +62,8 @@ export default function SeriesForm() {
                 alignItems: 'center',
                 marginTop: '100px',
                 justifyContent: 'space-around',
+                borderColor: 'black',
+                borderInlineColor: 'black',
             }}
             noValidate
             autoComplete="off"
@@ -56,40 +71,40 @@ export default function SeriesForm() {
             <Box sx={{ display: 'flex' }}>
                 <TextField
                     id="outlined-multiline-flexible"
-                    label="Multiline"
+                    label="Título"
                     multiline
                     maxRows={4}
-                    value={value}
-                    onChange={handleChange}
+                    value={titulo}
+                    onChange={handleTitulo}
                 />
-                <TextField id="outlined-textarea" label="Multiline Placeholder" placeholder="Placeholder" multiline />
             </Box>
             <TextField
                 id="outlined-multiline-static"
-                label="Multiline"
+                label="Descripción"
                 multiline
                 rows={6}
-                defaultValue="Default Value"
                 fullWidth
+                value={descripcion}
+                onChange={handleDescripcion}
             />
             <Divider />
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <TextField
                     id="outlined-multiline-flexible"
-                    label="Multiline"
+                    label="Estrellas"
                     multiline
                     maxRows={4}
-                    value={value}
-                    onChange={handleChange}
+                    value={estrellas}
+                    onChange={handleEstrellas}
                 />
                 <Divider orientation="vertical" />
                 <TextField
                     id="outlined-multiline-flexible"
-                    label="Multiline"
+                    label="Precio alquiler"
                     multiline
                     maxRows={4}
-                    value={value}
-                    onChange={handleChange}
+                    value={precio}
+                    onChange={handlePrecio}
                 />
             </Box>
             <Divider />
@@ -97,10 +112,10 @@ export default function SeriesForm() {
                 <TextField
                     id="filled-select-currency"
                     select
-                    label="Select"
+                    label="Género"
                     value={currency}
                     onChange={handleChange}
-                    helperText="Please select your currency"
+                    helperText="por favor seleccione el género"
                 >
                     {currencies.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -108,23 +123,26 @@ export default function SeriesForm() {
                         </MenuItem>
                     ))}
                 </TextField>
-                {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justifyContent="space-around">
-                        <KeyboardDatePicker
-                            disableToolbar
-                            variant="inline"
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            id="date-picker-inline"
-                            label="Date picker inline"
-                            value={selectedDate}
-                            onChange={handleDateChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                        />
-                    </Grid>
-                </MuiPickersUtilsProvider> */}
+                <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+                    <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        defaultValue="female"
+                        name="radio-buttons-group"
+                    >
+                        <FormControlLabel value="Atp" control={<Radio />} label="ATP" />
+                    </RadioGroup>
+                </FormControl>
+                <TextField
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ backgroundColor: '#fff', color: '#fff' }}
+                    label="Dia"
+                    type="datetime-local"
+                    name="expireAt"
+                    fullWidth
+                    // value={expireAt}
+                    // onChange={(e) => updater(dispatch, { ...props.task, ['expireAt']: e.target.value })}
+                />
             </Box>
         </Box>
     )

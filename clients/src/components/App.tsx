@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import DataBase from './DataBase'
 import SeriesForm from './SeriesForm'
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
         <>
             {/* <App /> */}
             <Routes>
-                <Route path="/" element={<SeriesForm />} />
+                <Route path="/serie" element={<SeriesForm />} />
+                <Route path="/" element={<DataBase />} />
             </Routes>
         </>
     )
