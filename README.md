@@ -19,6 +19,11 @@
 -   No se puede agregar sin completar los campos correctamente
 -   Se puede marcar como apta para todo publico
 
+## Para iniciar el proyecto
+
+-   Porfavor primero instale las dependencias con npm i en client y en server
+-   Luego puede prender ambos servidores con npm run start
+
 ## Dev
 
 -   Nicolas Minahk
