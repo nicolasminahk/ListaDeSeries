@@ -19,7 +19,7 @@ import {
     TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { Serie } from './DataBase'
+import { Serie } from './Home'
 
 interface NewSerieProps {
     open: boolean

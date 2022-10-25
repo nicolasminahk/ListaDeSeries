@@ -55,7 +55,6 @@ export const DataBase: FC = () => {
     const handleActive = () => {
         axios
             .put(`http://localhost:3001/api/serie/${singleSerie.id}`, {
-                ...singleSerie,
                 active: !singleSerie.active,
             })
             .then(({ data }) => {
@@ -66,7 +65,7 @@ export const DataBase: FC = () => {
 
     useEffect(() => {
         axios.get('http://localhost:3001/api/serie').then(({ data }) => {
-            setSeries(data.data)
+            setSeries(data.data.sort((a: Serie, b: Serie) => (a.titulo > b.titulo ? 1 : -1)))
             setDrawer(false)
         })
     }, [update, news, drawer])

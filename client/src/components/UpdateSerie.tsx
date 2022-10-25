@@ -99,7 +99,6 @@ export const UpdateSerie: FC<UpdateSerieProps> = ({ selectSerie, open, onClose, 
                     id="outlined-multiline-static"
                     label="Descripción"
                     multiline
-                    rows={6}
                     fullWidth
                     defaultValue={selectSerie.descripcion}
                     onChange={(e) => setDescripcion(e.target.value)}

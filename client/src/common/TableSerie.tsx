@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 import { TableCell, TableRow, Typography, Checkbox } from '@mui/material'
+import axios from 'axios'
 
 interface Serie {
     id?: string
@@ -21,9 +22,16 @@ interface TableSerieProps {
 }
 
 export const TableSerie: FC<TableSerieProps> = ({ serie, setSingleSerie, singleSerie }) => {
-    const [atp, setAtp] = useState(false)
+    const [atp, setAtp] = useState(serie.atp)
     const descripcion = serie.descripcion.length >= 50 ? serie.descripcion.substring(0, 30) + '...' : serie.descripcion
     const titulo = serie.titulo.length > 20 ? serie.titulo.substring(0, 15) + '...' : serie.titulo
+
+    const handleAtp = () => {
+        axios.put(`http://localhost:3001/api/serie/${serie.id}`, {
+            atp: !serie.atp,
+        })
+        setAtp(!atp)
+    }
 
     return (
         <TableRow
@@ -49,7 +57,7 @@ export const TableSerie: FC<TableSerieProps> = ({ serie, setSingleSerie, singleS
             <TableCell align="right"> $ {serie.precio}</TableCell>
             <TableCell align="right">
                 {serie.atp}
-                <Checkbox onClick={(e) => setAtp(!atp)}></Checkbox>
+                <Checkbox checked={atp} onClick={handleAtp}></Checkbox>
             </TableCell>
             <TableCell align="right">
                 {serie.active ? <Typography> AC</Typography> : <Typography> AN</Typography>}
