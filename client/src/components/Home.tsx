@@ -145,7 +145,7 @@ export const DataBase: FC = () => {
                     <Button onClick={() => (singleSerie.active ? setDrawerDelete(true) : setModal(true))}>
                         Eliminar
                     </Button>
-                    <Button onClick={() => navigate('/fin')}>Salir</Button>
+                    <Button onClick={() => navigate('/')}>Salir</Button>
                 </ButtonGroup>
             </Box>
 

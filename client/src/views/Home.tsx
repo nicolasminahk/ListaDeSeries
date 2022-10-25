@@ -10,7 +10,6 @@ export const Home = () => (
             alignItems: 'center',
             width: '100%',
             height: '98vh',
-            // overflow: "hidden",
         }}
     >
         <Connect />

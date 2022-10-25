@@ -31,8 +31,6 @@ export const NewSerie: FC<NewSerieProps> = ({ open, onClose, setDrawer }) => {
     const [genero, setGenero] = useState<string>('')
     const [atp, setAtp] = useState<boolean>(false)
     const [selectedDate, setSelectedDate] = useState<string>()
-    // const [showError, setShowError] = React.useState<boolean>(true)
-    // const values = ['titulo', 'descripcion', 'precio', 'estrellas', 'fechas', 'genero']
     const {
         register,
         getValues,

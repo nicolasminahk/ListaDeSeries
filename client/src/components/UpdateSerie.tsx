@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 
 interface UpdateSerieProps {
-    selectSerie: any //falta tiparlo
+    selectSerie: any
     open: boolean
     onClose: (param: boolean) => void
     setDrawer: (param: boolean) => void
