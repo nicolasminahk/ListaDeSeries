@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FC, useEffect, useState, useMemo } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
@@ -40,7 +40,6 @@ export const DataBase: FC = () => {
     const [drawerDelete, setDrawerDelete] = useState<boolean>(false)
     const [modal, setModal] = useState<boolean>(false)
     const [series, setSeries] = useState([])
-    const [remove, setRemove] = useState([])
     const [drawer, setDrawer] = useState<boolean>(false)
 
     const [singleSerie, setSingleSerie] = useState<Partial<Serie>>({})
@@ -48,7 +47,9 @@ export const DataBase: FC = () => {
     const navigate = useNavigate()
 
     const handleDelete = () => {
-        axios.delete(`http://localhost:3001/api/serie/${singleSerie.id}`)
+        axios.delete(`http://localhost:3001/api/serie/${singleSerie.id}`).then(() => {
+            setDrawerDelete(false)
+        })
     }
 
     const handleActive = () => {
@@ -57,21 +58,18 @@ export const DataBase: FC = () => {
                 ...singleSerie,
                 active: !singleSerie.active,
             })
-            .then(() => {
+            .then(({ data }) => {
                 setDrawer(true)
-                console.log('handle', { ...singleSerie, active: !singleSerie.active })
+                setSingleSerie(data.data)
             })
     }
-    console.log(singleSerie)
 
     useEffect(() => {
         axios.get('http://localhost:3001/api/serie').then(({ data }) => {
-            console.log('llegue ')
             setSeries(data.data)
             setDrawer(false)
         })
-        // setSingleSerie({})
-    }, [update, drawerDelete, news, singleSerie, drawer])
+    }, [update, news, drawer])
 
     return (
         <Box
@@ -125,15 +123,26 @@ export const DataBase: FC = () => {
                 <ButtonGroup variant="contained">
                     <Button onClick={() => setNews(true)}>Nuevo</Button>
                     <Button onClick={() => (singleSerie.active ? setUpdate(true) : setModal(true))}>Modificar</Button>
+                    {singleSerie.active ? (
+                        <Button
+                            onClick={() => {
+                                handleActive()
+                                setDrawer(true)
+                            }}
+                        >
+                            Anular
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={() => {
+                                handleActive()
+                                setDrawer(true)
+                            }}
+                        >
+                            Activar
+                        </Button>
+                    )}
 
-                    <Button
-                        onClick={() => {
-                            handleActive()
-                            setDrawer(true)
-                        }}
-                    >
-                        Anular
-                    </Button>
                     <Button onClick={() => (singleSerie.active ? setDrawerDelete(true) : setModal(true))}>
                         Eliminar
                     </Button>

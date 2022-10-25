@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { FC, useState, useMemo } from 'react'
-import { useForm, useFormContext } from 'react-hook-form'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -27,7 +26,6 @@ interface UpdateSerieProps {
 }
 
 export const UpdateSerie: FC<UpdateSerieProps> = ({ selectSerie, open, onClose, setDrawer }) => {
-    const navigate = useNavigate()
     const [titulo, setTitulo] = useState(selectSerie.titulo)
     const [genero, setGenero] = useState(selectSerie.genero)
     const [atp, setAtp] = useState(selectSerie.atp)
