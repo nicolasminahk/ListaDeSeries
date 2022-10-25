@@ -1,19 +1,29 @@
 import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import { FC, useEffect, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Paper from '@mui/material/Paper'
-import { Box, Button, Checkbox, Divider, Drawer, Modal, Typography } from '@mui/material'
 import axios from 'axios'
-import FormEdit from './FormEdit'
-import SeriesForm from './SeriesForm'
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableContainer,
+    Paper,
+    Box,
+    Button,
+    Divider,
+    Typography,
+    ButtonGroup,
+    Dialog,
+} from '@mui/material'
 
-interface Serie {
-    id?: string
+import { UpdateSerie } from './UpdateSerie'
+import { NewSerie } from './NewSerie'
+import { TableSerie } from '../common/TableSerie'
+
+export interface Serie {
+    id: string
     titulo: string
     descripcion: string
     fecha: number
@@ -23,54 +33,60 @@ interface Serie {
     atp: boolean
     active: boolean
 }
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-}
 
-function DataBase() {
-    const [atp, setAtp] = React.useState(false)
-    const [draw, setDraw] = React.useState(false)
-    const [drawDelet, setDrawDelet] = React.useState(false)
-    const [modal, setModal] = React.useState(false)
-    const [news, setNews] = React.useState(false)
-    const [series, setSeries] = React.useState([])
-    const [selectMovie, setSelectMovie] = React.useState<any>({})
-    const [delet, setDelet] = React.useState([])
+export const DataBase: FC = () => {
+    const [news, setNews] = useState<boolean>(false)
+    const [update, setUpdate] = useState<boolean>(false)
+    const [drawerDelete, setDrawerDelete] = useState<boolean>(false)
+    const [modal, setModal] = useState<boolean>(false)
+    const [series, setSeries] = useState([])
+    const [remove, setRemove] = useState([])
+    const [drawer, setDrawer] = useState<boolean>(false)
 
-    const handleChange = (e: any) => {
-        setAtp(e.target.value)
-    }
+    const [singleSerie, setSingleSerie] = useState<Partial<Serie>>({})
+
     const navigate = useNavigate()
 
     const handleDelete = () => {
-        axios.delete(`http://localhost:3001/api/serie/${selectMovie.id}`).then(({ data }) => setDelet(data.data.data))
-        series.filter((select) => select === selectMovie.id)
+        axios.delete(`http://localhost:3001/api/serie/${singleSerie.id}`)
     }
 
     const handleActive = () => {
-        axios.put(`http://localhost:3001/api/serie/${selectMovie.id}`, { active: !selectMovie.active })
+        axios
+            .put(`http://localhost:3001/api/serie/${singleSerie.id}`, {
+                ...singleSerie,
+                active: !singleSerie.active,
+            })
+            .then(() => {
+                setDrawer(true)
+                console.log('handle', { ...singleSerie, active: !singleSerie.active })
+            })
     }
+    console.log(singleSerie)
 
-    React.useEffect(() => {
-        axios.get('http://localhost:3001/api/serie').then(({ data }) => setSeries(data.data.data))
-    }, [draw, drawDelet, news])
-
-    console.log('estado', series)
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/serie').then(({ data }) => {
+            console.log('llegue ')
+            setSeries(data.data)
+            setDrawer(false)
+        })
+        // setSingleSerie({})
+    }, [update, drawerDelete, news, singleSerie, drawer])
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', width: '80%', m: '30px' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                minHeight: '90%',
+                maxHeight: '90%',
+                width: '70%',
+            }}
+        >
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Series</TableCell>
@@ -85,106 +101,69 @@ function DataBase() {
                     </TableHead>
                     <TableBody>
                         {series.map((serie: Serie, i: number) => {
-                            console.log(serie.id === selectMovie.id)
                             return (
-                                <TableRow
-                                    sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
-                                        border: serie.id === selectMovie.id ? '2.5px solid blue' : 'transparent',
-                                        '&:hover': {
-                                            border: '3px solid blue',
-                                        },
-                                    }}
-                                    onClick={() => setSelectMovie(serie)}
-                                >
-                                    <TableCell component="th" scope="serie">
-                                        {serie.titulo}
-                                    </TableCell>
-                                    <TableCell align="right" onClick={() => {}}>
-                                        {serie.descripcion}
-                                    </TableCell>
-                                    <TableCell align="right">{serie.fecha}</TableCell>
-                                    <TableCell align="right">{serie.estrellas}</TableCell>
-                                    <TableCell align="right">{serie.genero}</TableCell>
-                                    <TableCell align="right"> $ {serie.precio}</TableCell>
-                                    <TableCell align="right">
-                                        {serie.atp}
-                                        <Checkbox onClick={handleChange}></Checkbox>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {serie.active ? <Typography> AC</Typography> : <Typography> AN</Typography>}
-                                    </TableCell>
-                                </TableRow>
+                                <TableSerie
+                                    key={i}
+                                    serie={serie}
+                                    setSingleSerie={setSingleSerie}
+                                    singleSerie={singleSerie}
+                                />
                             )
                         })}
                     </TableBody>
                 </Table>
             </TableContainer>
             <Divider />
-            <>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    mt: '4%',
+                }}
+            >
+                <ButtonGroup variant="contained">
                     <Button onClick={() => setNews(true)}>Nuevo</Button>
-                    {/* <Button onClick={() => navigate(`/serieEdit/${selectMovie.id}`)}>Modificar</Button> */}
-                    <Button onClick={() => (selectMovie.active ? setDraw(true) : setModal(true))}>Modificar</Button>
+                    <Button onClick={() => (singleSerie.active ? setUpdate(true) : setModal(true))}>Modificar</Button>
+
                     <Button
                         onClick={() => {
                             handleActive()
+                            setDrawer(true)
                         }}
                     >
                         Anular
                     </Button>
-                    <Button onClick={() => (selectMovie.active ? setDrawDelet(true) : setModal(true))}>Eliminar</Button>
+                    <Button onClick={() => (singleSerie.active ? setDrawerDelete(true) : setModal(true))}>
+                        Eliminar
+                    </Button>
+                    <Button onClick={() => navigate('/fin')}>Salir</Button>
+                </ButtonGroup>
+            </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                        <Button onClick={() => navigate('/fin')}>Salir</Button>
-                    </Box>
-                </Box>
-            </>
-            <Drawer
-                anchor={'right'}
-                open={draw}
-                onClose={() => setDraw(false)}
-                PaperProps={{ sx: { bgcolor: 'white', width: '50%' } }}
-            >
-                <Box display={'flex'} alignItems="center" marginLeft={'100px'}>
-                    <FormEdit selectMovie={selectMovie} />
-                </Box>
-            </Drawer>
+            <UpdateSerie selectSerie={singleSerie} open={update} onClose={setUpdate} setDrawer={setDrawer} />
+
             {/* Drawer delete */}
-            <Drawer
-                anchor={'right'}
-                open={drawDelet}
-                onClose={() => setDrawDelet(false)}
-                PaperProps={{ sx: { bgcolor: 'white', width: '50%' } }}
-            >
-                <Box display={'flex'} alignContent={'center'} sx={{ m: '20px' }}>
+            <Dialog open={drawerDelete} onClose={() => setDrawerDelete(false)}>
+                <Box display="flex" alignContent="center" sx={{ m: '2%' }}>
                     <Typography> ¿Desea eliminar esta serie?</Typography>
-                    <Button onClick={handleDelete}>Ok</Button>
+                    <Button
+                        onClick={() => {
+                            handleDelete()
+                            setDrawer(true)
+                        }}
+                    >
+                        Ok
+                    </Button>
                 </Box>
-            </Drawer>
+            </Dialog>
             {/* Drawer nuevo */}
-            <Drawer
-                anchor={'right'}
-                open={news}
-                onClose={() => setNews(false)}
-                PaperProps={{ sx: { bgcolor: 'white', width: '50%' } }}
-            >
-                <Box display={'flex'} alignItems="center" marginLeft={'100px'}>
-                    <SeriesForm />
-                </Box>
-            </Drawer>
-            <Modal
-                open={modal}
-                onClose={() => setModal(false)}
-                aria-labelledby="parent-modal-title"
-                aria-describedby="parent-modal-description"
-            >
-                <Box sx={{ ...style, width: 200 }}>
+            <NewSerie open={news} onClose={setNews} setDrawer={setDrawer} />
+            <Dialog open={modal} onClose={() => setModal(false)}>
+                <Box display="flex" alignContent="center" sx={{ m: '2%' }}>
                     <Typography>La serie no esta en estado activo</Typography>
                 </Box>
-            </Modal>
+            </Dialog>
         </Box>
     )
 }
-
-export default DataBase
