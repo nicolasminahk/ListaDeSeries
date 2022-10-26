@@ -3,8 +3,8 @@
 ## Para iniciar el proyecto
 
 -   Porfavor primero instale las dependencias con npm i en la carpeta client y la carpeta server
--   Luego abrir una terminal en la carpeta server y corrando el comando npm run start
--   Por último abrir una terminal en la carpeta client y corrando el comando npm run start
+-   Luego abrir una terminal en la carpeta server, correr el comando npm start
+-   Por último abrir una terminal en la carpeta client, correr el comando npm start
 
 ### Caracteristicas Globales
 
