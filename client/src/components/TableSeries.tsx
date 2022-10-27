@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import {
     Table,
     TableBody,
@@ -20,7 +19,8 @@ import {
 
 import { UpdateSerie } from './UpdateSerie'
 import { NewSerie } from './NewSerie'
-import { TableSerie } from '../common/TableSerie'
+import { RowSerie } from '../common/RowSerie'
+import { axiosInstance } from '../config/axiosConfig'
 
 export interface Serie {
     id: string
@@ -47,14 +47,14 @@ export const DataBase: FC = () => {
     const navigate = useNavigate()
 
     const handleDelete = () => {
-        axios.delete(`http://localhost:3001/api/serie/${singleSerie.id}`).then(() => {
+        axiosInstance.delete(`/api/serie/${singleSerie.id}`).then(() => {
             setDrawerDelete(false)
         })
     }
 
     const handleActive = () => {
-        axios
-            .put(`http://localhost:3001/api/serie/${singleSerie.id}`, {
+        axiosInstance
+            .put(`/api/serie/${singleSerie.id}`, {
                 active: !singleSerie.active,
             })
             .then(({ data }) => {
@@ -64,7 +64,7 @@ export const DataBase: FC = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/serie').then(({ data }) => {
+        axiosInstance.get('/api/serie').then(({ data }) => {
             setSeries(data.data.sort((a: Serie, b: Serie) => (a.titulo > b.titulo ? 1 : -1)))
             setDrawer(false)
         })
@@ -99,7 +99,7 @@ export const DataBase: FC = () => {
                     <TableBody>
                         {series.map((serie: Serie, i: number) => {
                             return (
-                                <TableSerie
+                                <RowSerie
                                     key={i}
                                     serie={serie}
                                     setSingleSerie={setSingleSerie}

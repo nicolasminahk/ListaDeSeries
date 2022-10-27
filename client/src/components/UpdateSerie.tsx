@@ -1,7 +1,5 @@
 import * as React from 'react'
-import { FC, useState, useMemo } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { FC, useState } from 'react'
 import {
     TextField,
     Box,
@@ -17,6 +15,7 @@ import {
     InputLabel,
     Input,
 } from '@mui/material'
+import { axiosInstance } from '../config/axiosConfig'
 
 interface UpdateSerieProps {
     selectSerie: any
@@ -36,7 +35,7 @@ export const UpdateSerie: FC<UpdateSerieProps> = ({ selectSerie, open, onClose, 
     const [selectedDate, setSelectedDate] = useState()
 
     const handleSubmit = () => {
-        axios.put(`http://localhost:3001/api/serie/${selectSerie.id}`, {
+        axiosInstance.put(`/api/serie/${selectSerie.id}`, {
             titulo: titulo,
             descripcion: descripcion,
             precio: precio,

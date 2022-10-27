@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import {
     Box,
     Button,
@@ -19,7 +17,8 @@ import {
     TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { Serie } from './Home'
+import { Serie } from './TableSeries'
+import { axiosInstance } from '../config/axiosConfig'
 
 interface NewSerieProps {
     open: boolean
@@ -40,7 +39,7 @@ export const NewSerie: FC<NewSerieProps> = ({ open, onClose, setDrawer }) => {
     const body = getValues()
 
     const handleSubmit = () => {
-        axios.post('http://localhost:3001/api/serie', {
+        axiosInstance.post('/api/serie', {
             ...body,
             active: true,
             atp: atp,
@@ -66,8 +65,6 @@ export const NewSerie: FC<NewSerieProps> = ({ open, onClose, setDrawer }) => {
             label: 'terror',
         },
     ]
-
-    console.log()
 
     return (
         <Drawer open={open} onClose={() => onClose(false)} anchor="right" PaperProps={{ sx: { width: '50%' } }}>

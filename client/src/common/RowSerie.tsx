@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 
 import { TableCell, TableRow, Typography, Checkbox } from '@mui/material'
 import axios from 'axios'
+import { axiosInstance } from '../config/axiosConfig'
 
 interface Serie {
     id?: string
@@ -21,13 +22,13 @@ interface TableSerieProps {
     singleSerie: any
 }
 
-export const TableSerie: FC<TableSerieProps> = ({ serie, setSingleSerie, singleSerie }) => {
+export const RowSerie: FC<TableSerieProps> = ({ serie, setSingleSerie, singleSerie }) => {
     const [atp, setAtp] = useState(serie.atp)
     const descripcion = serie.descripcion.length >= 50 ? serie.descripcion.substring(0, 30) + '...' : serie.descripcion
     const titulo = serie.titulo.length > 20 ? serie.titulo.substring(0, 15) + '...' : serie.titulo
 
     const handleAtp = () => {
-        axios.put(`http://localhost:3001/api/serie/${serie.id}`, {
+        axiosInstance.put(`/api/serie/${serie.id}`, {
             atp: !serie.atp,
         })
         setAtp(!atp)

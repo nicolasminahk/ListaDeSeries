@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { DataBase } from '../components/Home'
+import { DataBase } from '../components/TableSeries'
 
 const Base = () => {
     return (
