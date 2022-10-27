@@ -1,9 +1,7 @@
 # Lista de Series
 
-## Para iniciar el proyecto
+## https://series-platform.herokuapp.com/
 
--   Porfavor primero instale las dependencias con npm i en la carpeta client y la carpeta server
--   Luego en la terminal de cada carpeta, correr el comando npm start
 
 ### Caracteristicas Globales
 
